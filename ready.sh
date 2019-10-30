@@ -42,6 +42,7 @@ if [ "${SYSTEM}" = "fedora" ]; then
 
   echo "Installing Docker Compose"
   sudo dnf install docker-compose
+  sudo systemctl start docker
 else
   sudo ${OS} update \
     && ${OS} install -y \
