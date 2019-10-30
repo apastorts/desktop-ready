@@ -7,6 +7,13 @@ then
   exit 0
 fi
 
+echo "Installing Basics"
+if [OS -eq "fedora"]
+then
+  sudo dnf install -y git curl wget
+else
+  sudo apt-get install -y git curl wget
+
 echo "Installing Docker"
 echo "Removing old versions of docker..."
 
@@ -25,6 +32,7 @@ then
 else
   sudo ${OS} remove -y docker docker-engine docker.io
 fi
+
 echo "Getting new version of docker"
 
 if [OS -eq "fedora"]
@@ -53,12 +61,36 @@ else
   && sudo apt-get install -y docker-ce
   sudo curl -L https://github.com/docker/compose/releases/download/1.21.2/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
 fi
+
 echo "Adding user to docker group"
 sudo usermod -a -G docker $(whoami)
 
-echo "Installing Git"
+echo "Installing php"
+
 if [OS -eq "fedora"]
 then
-  sudo dnf install -y git
+  sudo dnf install php php-common php-mysqlnd php-xml php-json php-gd php-mbstring
 else
-  sudo apt-get install -y git 
+  sudo dnf install php php-fpm php-mysqlnd php-xml php-json php-gd php-mbstring
+fi
+
+echo "Installing Composer"
+
+cd
+php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+php -r "if (hash_file('sha384', 'composer-setup.php') === 'a5c698ffe4b8e849a443b120cd5ba38043260d5c4023dbf93e1558871f1f07f58274fc6f4c93bcfd858c6bd0775cd8d1') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
+php composer-setup.php --install-dir=/usr/local/bin
+php -r "unlink('composer-setup.php');"
+
+echo "Installing Atom IDE"
+
+if [OS -eq "fedora"]
+then
+  cd
+  wget https://atom.io/download/rpm -O atom.rpm
+  sudo dnf install ./atom.rpm
+else
+  sudo add-apt-repository ppa:webupd8team/atom
+  sudo apt-get update
+  sudo apt-get install atom
+fi
