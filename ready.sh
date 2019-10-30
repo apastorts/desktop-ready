@@ -1,24 +1,22 @@
 #!/bin/bash
-OS="$1"
 
-if [OS -eq ""]
-then
+SYSTEM="$1"
+
+if [ "${SYSTEM}" = "" ]; then
   echo "Please introduce repository (ubuntu/fedora)"
   exit 0
 fi
 
 echo "Installing Basics"
-if [OS -eq "fedora"]
-then
+if [ "${SYSTEM}" = "fedora" ]; then
   sudo dnf install -y git curl wget
 else
   sudo apt-get install -y git curl wget
-
+fi
 echo "Installing Docker"
 echo "Removing old versions of docker..."
 
-if [OS -eq "fedora"]
-then
+if [ "${SYSTEM}" = "fedora" ]; then
   sudo dnf remove -y docker \
                   docker-client \
                   docker-client-latest \
@@ -35,8 +33,7 @@ fi
 
 echo "Getting new version of docker"
 
-if [OS -eq "fedora"]
-then
+if [ "${SYSTEM}" = "fedora" ]; then
   sudo dnf -y install dnf-plugins-core
   sudo dnf config-manager \
     --add-repo \
@@ -67,8 +64,7 @@ sudo usermod -a -G docker $(whoami)
 
 echo "Installing php"
 
-if [OS -eq "fedora"]
-then
+if [ "${SYSTEM}" = "fedora" ]; then
   sudo dnf install php php-common php-mysqlnd php-xml php-json php-gd php-mbstring
 else
   sudo dnf install php php-fpm php-mysqlnd php-xml php-json php-gd php-mbstring
@@ -84,13 +80,12 @@ php -r "unlink('composer-setup.php');"
 
 echo "Installing Atom IDE"
 
-if [OS -eq "fedora"]
-then
+if [ "${SYSTEM}" = "fedora" ]; then
   cd
   wget https://atom.io/download/rpm -O atom.rpm
   sudo dnf install ./atom.rpm
 else
   sudo add-apt-repository ppa:webupd8team/atom
   sudo apt-get update
-  sudo apt-get install atom
+  sudo apt-get install -y atom
 fi
