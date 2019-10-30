@@ -37,3 +37,19 @@ then
 
   echo "Installing Docker Compose"
   sudo dnf install docker-compose
+else
+  sudo ${OS} update \
+    && ${OS} install -y \
+         apt-transport-https \
+         ca-certificates \
+         curl git htop wget zcat \
+         software-properties-common
+
+  echo "Adding Docker Keys"
+  $ curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+
+  echo "Installing Docker Compose"
+  sudo apt-get update \
+  && sudo apt-get install -y docker-ce
+  sudo curl -L https://github.com/docker/compose/releases/download/1.21.2/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
+fi
