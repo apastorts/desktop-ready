@@ -60,3 +60,5 @@ echo "Installing Git"
 if [OS -eq "fedora"]
 then
   sudo dnf install -y git
+else
+  sudo apt-get install -y git 
