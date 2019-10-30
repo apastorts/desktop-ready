@@ -53,3 +53,10 @@ else
   && sudo apt-get install -y docker-ce
   sudo curl -L https://github.com/docker/compose/releases/download/1.21.2/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
 fi
+echo "Adding user to docker group"
+sudo usermod -a -G docker $(whoami)
+
+echo "Installing Git"
+if [OS -eq "fedora"]
+then
+  sudo dnf install -y git
